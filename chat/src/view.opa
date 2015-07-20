@@ -3,9 +3,9 @@ module View {
   function user_update(message msg) {
     line =
       <div class="row line">
-        <div class="span1 userpic" />
-        <div class="span2 user">{msg.author}:</div>
-        <div class="span2 message">{msg.text}</div>
+        <img src="https://avatars.githubusercontent.com/{msg.author}" class="userpic" />
+        <span class="user">{msg.author}</span>
+        <span class="message">{msg.text}</span>
       </div>
     #conversation =+ line;
     Dom.scroll_to_bottom(#conversation);
@@ -25,14 +25,17 @@ module View {
 
   function chat_html(author) {
     <div id=#conversation class="container-fluid"
-      onready={function(_) { Model.register_message_callback(user_update) }} />
+      onready={
+        function(_) {
+          Dom.give_focus(#entry);
+          Model.register_message_callback(user_update);
+        }
+      } />
     <div id=#footer class="navbar navbar-fixed-bottom">
-      <div class=container>
+      <div class="container-fluid">
         <div class=input-append>
-          <input id=#entry class="input-xxlarge" type="text"
+          <input id=#entry class="form-control" type="text" placeholder="Write a message..."
             onnewline={function(_) { broadcast(author) }}>
-          <button class="btn btn-primary" type="button"
-            onclick={function(_) { broadcast(author) }}>Post</button>
         </div>
       </div>
     </div>
