@@ -15,8 +15,4 @@ module Model {
     Network.add_callback(callback, room);
   }
 
-  function new_author() {
-    Random.string(8);
-  }
-
 }

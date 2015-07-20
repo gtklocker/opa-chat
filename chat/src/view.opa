@@ -23,14 +23,34 @@ module View {
     </div>
   }
 
-  function chat_html(author) {
+  function chat_html() {
     <div id=#conversation class="container-fluid"
       onready={
         function(_) {
-          Dom.give_focus(#entry);
           Model.register_message_callback(user_update);
+          Dom.show(#author_modal);
+          Dom.give_focus(#author);
         }
       } />
+    <div id=#author_modal class="modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <input id=#author class="form-control input-small" placeholder="Write a nickname"
+              onnewline={
+                function(_) {
+                  #main =+ form_html(Dom.get_value(#author));
+                  Dom.hide(#author_modal);
+                  Dom.give_focus(#entry);
+                }
+              }>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  function form_html(author) {
     <div id=#footer class="navbar navbar-fixed-bottom">
       <div class="container-fluid">
         <div class=input-append>
@@ -42,8 +62,7 @@ module View {
   }
 
   function default_page() {
-    author = Model.new_author();
-    Resource.page("Opa chat", page_template(chat_html(author)));
+    Resource.page("Opa chat", page_template(chat_html()));
   }
 
 }
